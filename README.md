@@ -1,38 +1,142 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Ethereum Block Explorer
+
+The lessons this week covered the Ethereum JSON-RPC API and the `ethers.js` library giving us the ability to query the Ethereum blockchain and make transactions!
+
+Let's put that knowledge to the test by building our very own **Ethereum Block Explorer**!
+
+Blockexplorers give us the ability to view lots of different information about the blockchain including data about:
+
+- the blockchain network itself
+- blocks in the blockchain
+- transactions in a block
+- accounts
+- and many other things
+
+[Etherscan](https://etherscan.io/) is a good example of an Ethereum blockexplorer. Check it out to get familiar with how blockexplorers generally work.
+
+This particular project is very much open-ended. We'll add some challenges here to get your imagination going, but use Etherscan as a guide for features you might consider building in your project.
 
 ## Getting Started
 
-First, run the development server:
+Clone this project to pull down some basic starter code.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+After that cd into the base directory of the project and run `npm install` to download all the project dependencies.
+
+In this project we chose to use React for a front-end and added minimal front-end code to get you going, but feel free to use any front-end stack you like.
+
+Unlike the lessons this week that used the Ethereum JSON-RPC API and the `ethers.js` library to communicate with the Ethereum network, the starter code in this project uses the [AlchemySDK](https://docs.alchemy.com/reference/alchemy-sdk-quickstart?a=eth-bootcamp). The AlchemySDK's core package wraps almost all of the `ethers.js` provider functionality that we learned about and should feel very familiar to you.
+
+For example, the following `ethers.js` code
+
+```js
+const blockNumber = await provider.getBlockNumber();
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+can be written using the AlchemySDK like so:
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+```js
+const blockNumber = await alchemy.core.getBlockNumber();
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+Another `ethers.js ` example
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+```js
+const transcations = await provider.getBlockWithTransactions(SOME_BLOCK_NUMBER);
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+translates to
 
-## Learn More
+```js
+const transactions = await alchemy.core.getBlockWithTransactions(
+  SOME_BLOCK_NUMBER
+);
+```
 
-To learn more about Next.js, take a look at the following resources:
+and so on.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+There are some `ethers.js` provider functions that are not often-used and therefore not included in `alchemy.core`. But if you ever need the full ethers provider functionality you can access the provider directly with the following code:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```js
+const ethersProvider = await alchemy.config.getProvider();
+```
 
-## Deploy on Vercel
+You can find lots of good docs on the AlchemySDK here:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- [API Quickstart](https://docs.alchemy.com/reference/alchemy-sdk-quickstart?a=eth-bootcamp)
+- [API Overview](https://docs.alchemy.com/reference/api-overview?a=eth-bootcamp)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Alright, without further ado, let's get started!
+
+## 1. Create a unique Alchemy API key
+
+If you have not already done so, create a unique Alchemy API Mainnet key
+for your project as [described here](https://docs.alchemy.com/reference/api-overview?a=eth-bootcamp).
+
+## 2. Add your API key to as an environment variable for the project
+
+Create an empty `.env` file in the base directory of this project.
+
+Add the following line to the `.env` file replacing `YOUR_ALCHEMY_API_KEY` with your api key.
+
+```sh
+REACT_APP_ALCHEMY_API_KEY=YOUR_ALCHEMY_API_KEY
+```
+
+Do not remove the `REACT_APP_` prefix. React uses that to import env variables.
+
+**⚠️ Note**
+
+> Your Alchemy API Mainnet Key is a sensitive piece of data. If we were\
+> building an enterprise app to conquer the world we would never place\
+> this sensitive data in the client code of our blockexplorer project that\
+> could potentially be read by anyone.
+>
+> But hey, we're just learning this stuff right now, not conquering anything\
+> yet! :-) It won't be the end of the world to put the Alchemy API key in our\
+> front-end code for this project.
+
+## 3. Start the webserver
+
+`npm start`
+
+Running the command above will run the app in the development mode. Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+
+The webpage will automatically reload when you make code changes.
+
+What you'll see in the browser is Ethereum Mainnet's current block number. Not very exciting, but that's where you come in to save the day!
+
+## 4. Make the blockexplorer cool!
+
+The starter code pulls down the current block number for you.
+
+Can you get more information about the current block and display it in the page?
+Take a look at [alchemy.core.getBlock()](https://docs.alchemy.com/reference/sdk-getblock?a=eth-bootcamp) for how you might go about that.
+
+Blocks contains transactions. Can you get the list of transactions for a given block? Can you use [alchemy.core.getBlockWithTransactions()](https://docs.alchemy.com/reference/sdk-getblockwithtransactions?a=eth-bootcamp) for this?
+
+How about getting details for individual transactions? The [alchemy.core.getTransactionReceipt()](https://docs.alchemy.com/reference/sdk-gettransactionreceipt?a=eth-bootcamp) looks handy.
+
+## 5. More ideas to think about
+
+- Connecting the dots.
+  - Allow users to click on a block listed in the webpage to get the block's details including its list of transactions
+  - From the list of transactions allow users to click on specific transactions to get the details of the transaction
+- Make an accounts page where a user can look up their balance or someone else's balance
+
+## 6. Supercharge your blockexplorer using AlchemySDK's specialized APIs
+
+By using the AlchemySDK you can really supercharge your projects with additional API functionality that isn't included in the `ethers.js` package including:
+
+- NFT methods
+- WebSocket methods
+- Alchemy's Transact API functionality
+- endpoints for using Alchemy's Notify Webhooks
+
+Read more about the above in the [Alchemy SDK Surface docs](https://docs.alchemy.com/reference/alchemy-sdk-api-surface-overview?a=eth-bootcamp). Using the SDK can implement the following features?
+
+- Given a contract address and token id, can you get the NFT's metadata?
+- What is the floor price of an NFT right now?
+- Did a pending transaction get mined?
+- What transfers did an address receive this year?
+
+Good luck and have fun!
