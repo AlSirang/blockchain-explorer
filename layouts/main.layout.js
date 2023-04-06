@@ -12,7 +12,7 @@ export default function MainLayout({ children }) {
       </Head>
 
       <Header />
-      <main className="max-w-[1700px] w-full m-auto">{children}</main>
+      <>{children}</>
     </>
   );
 }
