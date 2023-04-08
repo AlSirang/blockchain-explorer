@@ -26,7 +26,7 @@ export const LatestTxns = ({ latestBlockInfo = {} }) => {
   }, [transactions]);
 
   return (
-    <section className="bg-white rounded-md drop-shadow-sm border border-stone-300 overflow-hidden">
+    <section className="bg-white rounded-lg drop-shadow-sm border border-stone-300 overflow-hidden">
       <div className="pt-3">
         <div className="border-b">
           <div className="px-5 mb-2">

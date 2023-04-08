@@ -9,7 +9,7 @@ export default function Home({ blocks, latestBlockInfo }) {
     <>
       <Search />
       <Overview />
-      <section className="max-w-7xl m-auto px-5 md:px-0">
+      <section className="max-w-7xl m-auto px-5">
         <div className="grid gap-3 md:grid-cols-12">
           <div className="col-span-6">
             <LatestBlocks blocks={blocks} />
