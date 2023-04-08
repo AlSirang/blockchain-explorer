@@ -4,7 +4,7 @@ import Search from "@/components/home/search";
 import LatestBlocks from "@/components/home/latest-blocks";
 import { LatestTxns } from "@/components/home/latest-txns";
 
-export default function Home({ blocks, latestTxns }) {
+export default function Home({ blocks, latestBlockInfo }) {
   return (
     <>
       <Search />
@@ -16,7 +16,7 @@ export default function Home({ blocks, latestTxns }) {
           </div>
 
           <div className="col-span-6">
-            {<LatestTxns latestTxns={latestTxns} />}
+            {<LatestTxns latestBlockInfo={latestBlockInfo} />}
           </div>
         </div>
       </section>
@@ -26,12 +26,20 @@ export default function Home({ blocks, latestTxns }) {
 
 export const getServerSideProps = async () => {
   const blocks = [];
-  let latestTxns = [];
+  let latestBlockInfo = {
+    transactions: [],
+    timestamp: 0,
+  };
 
   try {
     const latestBlock = await alchemy.core.getBlockNumber();
-    const latestBlockInfo = await alchemy.core.getBlock(latestBlock);
-    latestTxns = latestBlockInfo.transactions;
+    const { transactions, timestamp } = await alchemy.core.getBlock(
+      latestBlock
+    );
+    latestBlockInfo = {
+      transactions,
+      timestamp,
+    };
 
     for (let i = 0; i < 6; i++) {
       blocks.push(latestBlock - i);
@@ -42,7 +50,7 @@ export const getServerSideProps = async () => {
   return {
     props: {
       blocks,
-      latestTxns,
+      latestBlockInfo,
     },
   };
 };
