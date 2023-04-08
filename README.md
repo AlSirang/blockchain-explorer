@@ -1,3 +1,5 @@
+This project is part of [Alchemy University](https://university.alchemy.com)'s Ethereum Developer Bootcamp.
+
 # Ethereum Block Explorer
 
 The lessons this week covered the Ethereum JSON-RPC API and the `ethers.js` library giving us the ability to query the Ethereum blockchain and make transactions!
@@ -79,10 +81,10 @@ Create an empty `.env` file in the base directory of this project.
 Add the following line to the `.env` file replacing `YOUR_ALCHEMY_API_KEY` with your api key.
 
 ```sh
-REACT_APP_ALCHEMY_API_KEY=YOUR_ALCHEMY_API_KEY
+NEXT_PUBLIC_ALCHEMY_API_KEY=YOUR_ALCHEMY_API_KEY
 ```
 
-Do not remove the `REACT_APP_` prefix. React uses that to import env variables.
+Do not remove the `NEXT_PUBLIC_` prefix. React uses that to import env variables.
 
 **⚠️ Note**
 
