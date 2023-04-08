@@ -6,7 +6,13 @@ module.exports = {
     "./layouts/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        cblue: {
+          100: "rgba(17,27,54)",
+        },
+      },
+    },
   },
   plugins: [],
 };
