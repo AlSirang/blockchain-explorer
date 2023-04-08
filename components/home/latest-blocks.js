@@ -47,7 +47,7 @@ const BlockInfo = ({ block }) => {
   }, [block]);
   return (
     <div className="py-5 border-b min-h-[100px]">
-      <div className="flex flex-wrap md:flex-nowrap items-center gap-2">
+      <div className="flex flex-wrap md:flex-nowrap items-center gap-3 md:gap-10">
         <div className="flex items-center gap-2 md:inline-block w-full md:w-[40%] pl-10">
           <div className="flex items-center gap-2">
             <span className="bg-gray-100 p-3 rounded-md">
@@ -58,7 +58,7 @@ const BlockInfo = ({ block }) => {
                 <h4>{blockInfo.number}</h4>
               </PageLink>
 
-              <p className="text-sm text-slate-500">
+              <p className="text-sm text-[#6c757d]">
                 {timeAgo(blockInfo.timestamp)} ago
               </p>
             </div>
@@ -76,7 +76,7 @@ const BlockInfo = ({ block }) => {
               {blockInfo.transactions && blockInfo.transactions.length}
               &nbsp;txns&nbsp;
             </PageLink>
-            <span>in 12 secs</span>
+            <span className="text-sm text-[#6c757d]">in 12 secs</span>
           </p>
         </div>
       </div>
