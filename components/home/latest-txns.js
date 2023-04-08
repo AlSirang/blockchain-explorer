@@ -6,22 +6,25 @@ import {
 } from "@/utils/get-shorten-address";
 import { SvgPaperIcon } from "@/icons";
 import { alchemy } from "@/configs/alchemy.config";
+import { PageLink } from "../page-link";
 
-export const LatestTxns = ({ latestTxns = [] }) => {
+export const LatestTxns = ({ latestBlockInfo = {} }) => {
   const [firstSixTxns, setFirstSixTxns] = useState([]);
 
+  const { transactions, timestamp } = latestBlockInfo;
+
   useEffect(() => {
-    const txnsCount = latestTxns.length;
-    const endIndex = txnsCount > 6 ? 6 : txnsCount;
-    const txns = [];
-    for (let i = 0; i < endIndex; i++) {
-      txns.push(latestTxns[i]);
+    if (transactions?.length) {
+      const txnsCount = transactions.length;
+      const endIndex = txnsCount > 6 ? 6 : txnsCount;
+      const txns = [];
+      for (let i = 0; i < endIndex; i++) {
+        txns.push(transactions[i]);
+      }
+      setFirstSixTxns(txns);
     }
+  }, [transactions]);
 
-    setFirstSixTxns(txns);
-  }, [latestTxns]);
-
-  console.log({ firstSixTxns });
   return (
     <section className="bg-white rounded-md drop-shadow-sm border border-stone-300 overflow-hidden">
       <div className="pt-3">
@@ -33,7 +36,7 @@ export const LatestTxns = ({ latestTxns = [] }) => {
 
         <div>
           {firstSixTxns.map((txn) => (
-            <TxnInfo key={txn} txn={txn} />
+            <TxnInfo key={txn} txn={txn} timestamp={timestamp} />
           ))}
         </div>
 
@@ -49,15 +52,13 @@ export const LatestTxns = ({ latestTxns = [] }) => {
   );
 };
 
-const TxnInfo = ({ txn }) => {
+const TxnInfo = ({ txn, timestamp }) => {
   const [txInfo, setTxInfo] = useState({});
 
   useEffect(() => {
     const getTxInfo = async () => {
       try {
         const txInfo = await alchemy.core.getTransactionReceipt(txn);
-        console.log(txInfo);
-
         setTxInfo(txInfo);
       } catch (err) {}
     };
@@ -66,20 +67,33 @@ const TxnInfo = ({ txn }) => {
   }, [txn]);
   return (
     <div className="py-5 border-b min-h-[100px]">
-      <div className="flex flex-wrap md:flex-nowrap items-center">
-        <div className="w-full md:w-[40%] pl-10">
-          <div className="flex items-center gap-1">
-            <span className="bg-gray-100 p-2 rounded-md">
+      <div className="flex flex-wrap md:flex-nowrap items-center gap-3 md:gap-10">
+        <div className="flex items-center gap-2 md:inline-block w-full md:w-[40%] pl-10">
+          <div className="flex items-center gap-2">
+            <span className="bg-gray-100 p-3 rounded-md">
               <SvgPaperIcon />
             </span>
-            <h4>{getShortenAddressEnd(txn)}</h4>
+            <div>
+              <PageLink href={`tx/${txn}`}>
+                <h4>{getShortenAddressEnd(txn)}</h4>
+              </PageLink>
+              <p className="text-sm text-[#6c757d]">{timeAgo(timestamp)} ago</p>
+            </div>
           </div>
-
-          <p>{timeAgo(txInfo.timestamp)} ago</p>
         </div>
-        <div className="w-full md:w-[60%]">
-          <h4>From {getShortenAddress(txInfo.from)}</h4>
-          <h4>To {getShortenAddress(txInfo.to)}</h4>
+        <div className="w-full md:w-[60%] pl-10 md:pl-0">
+          <h4>
+            From&nbsp;
+            <PageLink href={`account/${txInfo.from}`}>
+              {getShortenAddress(txInfo.from)}
+            </PageLink>
+          </h4>
+          <h4>
+            To&nbsp;
+            <PageLink href={`account/${txInfo.to}`}>
+              {getShortenAddress(txInfo.to)}
+            </PageLink>
+          </h4>
         </div>
       </div>
     </div>
