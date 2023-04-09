@@ -11,6 +11,9 @@ module.exports = {
         cblue: {
           100: "rgba(17,27,54)",
         },
+        cgray: {
+          100: "#6c757d",
+        },
       },
     },
   },

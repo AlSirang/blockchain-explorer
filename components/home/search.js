@@ -6,7 +6,7 @@ export default function Search() {
       }}
       className="min-h-[300px] bg-cblue-100"
     >
-      <div className="max-w-7xl m-auto pt-16 px-5 md:px-0">
+      <div className="max-w-7xl m-auto pt-16 px-5">
         <h1 className="text-white text-[1.5rem] mb-1">
           The Ethereum Blockchain Explorer
         </h1>
