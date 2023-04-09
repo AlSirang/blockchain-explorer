@@ -1,10 +1,11 @@
-import { alchemy } from "@/configs/alchemy.config";
 import Overview from "@/components/home/overview";
 import Search from "@/components/home/search";
 import LatestBlocks from "@/components/home/latest-blocks";
 import { LatestTxns } from "@/components/home/latest-txns";
+import { getLatestBlocks } from "@/alchemy-core/get-latest-blocks";
+import { getLatestTransactions } from "@/alchemy-core/get-latest-transactions";
 
-export default function Home({ blocks, latestBlockInfo }) {
+export default function Home({ blocksInfo, latestTransactions }) {
   return (
     <>
       <Search />
@@ -12,11 +13,11 @@ export default function Home({ blocks, latestBlockInfo }) {
       <section className="max-w-7xl m-auto px-5">
         <div className="grid gap-3 md:grid-cols-12">
           <div className="col-span-6">
-            <LatestBlocks blocks={blocks} />
+            <LatestBlocks blocksInfo={blocksInfo} />
           </div>
 
           <div className="col-span-6">
-            {<LatestTxns latestBlockInfo={latestBlockInfo} />}
+            {<LatestTxns latestTransactions={latestTransactions} />}
           </div>
         </div>
       </section>
@@ -25,32 +26,22 @@ export default function Home({ blocks, latestBlockInfo }) {
 }
 
 export const getServerSideProps = async () => {
-  const blocks = [];
-  let latestBlockInfo = {
-    transactions: [],
-    timestamp: 0,
-  };
+  let blocksInfo = [];
+  let latestTransactions = [];
 
   try {
-    const latestBlock = await alchemy.core.getBlockNumber();
-    const { transactions, timestamp } = await alchemy.core.getBlock(
-      latestBlock
-    );
-    latestBlockInfo = {
-      transactions,
-      timestamp,
-    };
-
-    for (let i = 0; i < 6; i++) {
-      blocks.push(latestBlock - i);
-    }
-    blocks;
-  } catch (err) {}
+    [blocksInfo, latestTransactions] = await Promise.all([
+      getLatestBlocks(),
+      getLatestTransactions(),
+    ]);
+  } catch (err) {
+    console.log({ err });
+  }
 
   return {
     props: {
-      blocks,
-      latestBlockInfo,
+      blocksInfo,
+      latestTransactions,
     },
   };
 };
