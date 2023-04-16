@@ -12,3 +12,8 @@ body {
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   background-color: #fafbfd;
 }
+
+.github-link:hover {
+  color: #0784c3;
+  text-decoration: underline;
+}

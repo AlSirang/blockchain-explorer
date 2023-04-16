@@ -11,7 +11,15 @@ export default function Header() {
           </NextLink>
         </span>
 
-        <div>Home</div>
+        <div>
+          <a
+            href="https://github.com/alsirang"
+            target="_blank"
+            className="github-link"
+          >
+            Github
+          </a>
+        </div>
       </div>
     </header>
   );
