@@ -8,6 +8,9 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        cwhite: {
+          100: "#fafbfd",
+        },
         cblue: {
           100: "rgba(17,27,54)",
         },

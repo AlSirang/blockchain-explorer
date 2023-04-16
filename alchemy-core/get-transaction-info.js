@@ -24,11 +24,8 @@ export const getTransactionInfo = async (query) => {
     nonce: transaction.nonce,
     data: transaction.data,
     gasUsed: transactionReceipt.gasUsed.toString(),
-    logs: transactionReceipt.logs,
-    logsBloom: transactionReceipt.logsBloom,
     status: transactionReceipt.status,
-    cumulativeGasUsed: transactionReceipt.cumulativeGasUsed.toString(),
-    effectiveGasPrice: transactionReceipt.effectiveGasPrice.toString(),
     confirmations: transactionReceipt.confirmations.toString(),
+    transactionIndex: transactionReceipt.transactionIndex,
   };
 };

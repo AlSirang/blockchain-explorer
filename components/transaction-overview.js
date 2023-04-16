@@ -1,3 +1,4 @@
+import { ethers } from "ethers";
 import { PageLink } from "./page-link";
 
 export default function TransactionOverview(props) {
@@ -15,12 +16,10 @@ export default function TransactionOverview(props) {
     nonce,
     data,
     gasUsed,
-    logs,
-    logsBloom,
     status,
-    cumulativeGasUsed,
-    effectiveGasPrice,
+    transactionIndex,
   } = props;
+
   return (
     <section className="max-w-7xl m-auto px-5">
       <div className="border-b py-5 pt-4">
@@ -50,12 +49,12 @@ export default function TransactionOverview(props) {
                 </p>
                 <p className="col-span-12 md:col-span-9">
                   {Boolean(status) && (
-                    <span className="border border-green-700 bg-green-50 text-green-700 py-[2px] px-2 text-[15px] rounded-md">
+                    <span className="border border-green-700 bg-green-50 text-green-700 py-[2px] px-2 text-[0.75rem] rounded-md">
                       Success
                     </span>
                   )}
                   {!Boolean(status) && (
-                    <span className="border border-red-500 bg-red-50 text-red-500 py-[2px] px-2 text-[15px] rounded-md">
+                    <span className="border border-red-500 bg-red-50 text-red-500 py-[2px] px-2 text-[0.75rem] rounded-md">
                       Failed
                     </span>
                   )}
@@ -66,7 +65,9 @@ export default function TransactionOverview(props) {
                   Block:
                 </p>
                 <p className="col-span-12 md:col-span-9 text-[15px]">
-                  {blockNumber}
+                  <PageLink href={`/block/${blockNumber}`}>
+                    {blockNumber}
+                  </PageLink>
                 </p>
               </div>
               <div className="grid grid-cols-12 md:gap-3 gap-1">
@@ -74,7 +75,7 @@ export default function TransactionOverview(props) {
                   Confirmation:
                 </p>
                 <p className="col-span-12 md:col-span-9 text-[15px]">
-                  <span className="border border-cgray-100-500 bg-gray-50  py-[2px] px-2 text-[15px] rounded-md">
+                  <span className="border border-cgray-100-500 bg-gray-50  py-[2px] px-2 text-[0.75rem] rounded-md">
                     {confirmations}&nbsp; Block Confirmations
                   </span>
                 </p>
@@ -102,25 +103,16 @@ export default function TransactionOverview(props) {
                 <p className="text-cgray-100 col-span-12 md:col-span-3">
                   Value:
                 </p>
-                <p className="col-span-12 md:col-span-9 text-[15px] break-words">
-                  {value}
-                </p>
+                <Value value={value} />
               </div>
               <div className="grid grid-cols-12 md:gap-3 gap-1">
                 <p className="text-cgray-100 col-span-12 md:col-span-3">
                   Transaction Fee:
                 </p>
-                <p className="col-span-12 md:col-span-9 text-[15px] break-words">
-                  {"fee"}
-                </p>
+                <TransactionFee gasPrice={gasPrice} gasUsed={gasUsed} />
               </div>
               <div className="grid grid-cols-12 md:gap-3 gap-1">
-                <p className="text-cgray-100 col-span-12 md:col-span-3">
-                  Gas Price:
-                </p>
-                <p className="col-span-12 md:col-span-9 text-[15px]">
-                  {gasPrice}
-                </p>
+                <GasPrice gasPrice={gasPrice} />
               </div>
             </div>
           </div>
@@ -168,7 +160,14 @@ export default function TransactionOverview(props) {
                   Other Attributes:
                 </p>
                 <p className="col-span-12 md:col-span-9 text-[15px]">
-                  {"baseFeePerGas"}
+                  <span className="inline-flex gap-2">
+                    <span className="border border-cgray-100-500 bg-gray-50  py-[2px] px-2 text-[0.75rem] rounded-md">
+                      Nonce: {nonce}
+                    </span>
+                    <span className="border border-cgray-100-500 bg-gray-50  py-[2px] px-2 text-[0.75rem] rounded-md">
+                      Position In Block: {transactionIndex}
+                    </span>
+                  </span>
                 </p>
               </div>
               <div className="grid grid-cols-12 md:gap-3 gap-1">
@@ -179,7 +178,8 @@ export default function TransactionOverview(props) {
                   <textarea
                     value={data}
                     readOnly
-                    className="w-full border rounded-md p-2 focus:outline-0"
+                    rows="4"
+                    className="w-full border rounded-md p-2 focus:outline-0 bg-cwhite-100"
                   ></textarea>
                 </div>
               </div>
@@ -196,3 +196,36 @@ export default function TransactionOverview(props) {
     </section>
   );
 }
+
+const TransactionFee = ({ gasPrice, gasUsed }) => {
+  const transactionFeeWei = gasPrice * gasUsed;
+  const transactionFeeETH = ethers.utils.formatEther(transactionFeeWei);
+  return (
+    <p className="col-span-12 md:col-span-9 text-[15px] break-words">
+      {transactionFeeETH} ETH
+    </p>
+  );
+};
+
+const Value = ({ value }) => {
+  const valueInETH = ethers.utils.formatEther(value);
+  return (
+    <p className="col-span-12 md:col-span-9 text-[15px] break-words">
+      {valueInETH} ETH
+    </p>
+  );
+};
+
+const GasPrice = ({ gasPrice }) => {
+  const gasPriceInGwei = ethers.utils.formatUnits(gasPrice, "gwei");
+  const gasPriceInETH = ethers.utils.formatUnits(gasPrice);
+  return (
+    <>
+      <p className="text-cgray-100 col-span-12 md:col-span-3">Gas Price:</p>
+      <p className="col-span-12 md:col-span-9 text-[15px] inline-flex gap-2">
+        <span>{gasPriceInGwei} Gwei</span>
+        <span className="text-cgray-100">({gasPriceInETH} ETH)</span>
+      </p>
+    </>
+  );
+};
