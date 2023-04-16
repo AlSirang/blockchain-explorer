@@ -136,20 +136,10 @@ export default function TransactionOverview(props) {
                   Gas Fees:
                 </p>
                 <p className="col-span-12 md:col-span-9 text-[15px]">
-                  <span className="inline-flex gap-2">
-                    <span className="md:pr-3 md:border-r-2">
-                      Max: {maxFeePerGas}
-                    </span>
-                    <span>Max Priority: {maxPriorityFeePerGas}</span>
-                  </span>
-                </p>
-              </div>
-              <div className="grid grid-cols-12 md:gap-3 gap-1">
-                <p className="text-cgray-100 col-span-12 md:col-span-3">
-                  Burnt & Txn Savings Fees:
-                </p>
-                <p className="col-span-12 md:col-span-9 text-[15px]">
-                  {"gasLimit"}
+                  <GasFees
+                    maxFeePerGas={maxFeePerGas}
+                    maxPriorityFeePerGas={maxPriorityFeePerGas}
+                  />
                 </p>
               </div>
 
@@ -226,6 +216,24 @@ const GasPrice = ({ gasPrice }) => {
         <span>{gasPriceInGwei} Gwei</span>
         <span className="text-cgray-100">({gasPriceInETH} ETH)</span>
       </p>
+    </>
+  );
+};
+
+const GasFees = ({ maxFeePerGas, maxPriorityFeePerGas }) => {
+  const maxFeePerGasGwei = ethers.utils.formatUnits(maxFeePerGas, "gwei");
+  const maxPriorityFeePerGasGwei = ethers.utils.formatUnits(
+    maxPriorityFeePerGas,
+    "gwei"
+  );
+  return (
+    <>
+      <span className="inline-flex gap-2">
+        <span className="md:pr-3 md:border-r-2">
+          Max: {maxFeePerGasGwei} Gwei
+        </span>
+        <span>Max Priority: {maxPriorityFeePerGasGwei} Gwei</span>
+      </span>
     </>
   );
 };
