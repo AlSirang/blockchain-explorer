@@ -120,7 +120,7 @@ export default function Index({ block, transactions = [] }) {
 
             <tbody>
               {page.map((transaction) => (
-                <tr className="border-b last:border-b-0" key={transaction.hash}>
+                <tr className="border-b" key={transaction.hash}>
                   <td class="border-t-0 px-6 align-middle whitespace-nowrap p-4 text-left text-blueGray-700 ">
                     <PageLink href={`/tx/${transaction.hash}`}>
                       {getShortenAddressEnd(transaction.hash, 15)}
@@ -148,7 +148,7 @@ export default function Index({ block, transactions = [] }) {
             </tbody>
           </table>
 
-          <div className="flex justify-end">
+          <div className="flex justify-end mt-5">
             <div className="border inline-block rounded-md overflow-hidden">
               <button
                 onClick={onPrevious}
