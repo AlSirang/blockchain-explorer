@@ -157,7 +157,7 @@ export default function Index({ block, transactions = [] }) {
                 &lt;
               </button>
               <span className="border-x p-2 py-1 h-[10px] cursor-default text-[0.95rem]">
-                {currentPage + 1} of {totalPages}
+                {currentPage + 1} of {totalPages + 1}
               </span>
               <button onClick={onNext} className="p-2 py-1 hover:bg-gray-50">
                 &gt;
