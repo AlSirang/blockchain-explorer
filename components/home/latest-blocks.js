@@ -21,7 +21,9 @@ export default function LatestBlocks({ blocksInfo = [] }) {
         <div className="bg-slate-50">
           <div className="px-5">
             <div className="flex justify-center py-2">
-              <button className="uppercase">View all blocks</button>
+              <button className="uppercase text-[0.95rem] text-cgray-100">
+                View all blocks
+              </button>
             </div>
           </div>
         </div>
