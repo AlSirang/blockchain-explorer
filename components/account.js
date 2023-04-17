@@ -1,3 +1,4 @@
+import { useEffect, useReducer } from "react";
 import { ethers } from "ethers";
 import { PageLink } from "./page-link";
 import {
@@ -5,7 +6,65 @@ import {
   getShortenAddressEnd,
 } from "@/utils/get-shorten-address";
 
+const PAGE_SIZE = 25;
+
 export const Account = ({ wallet, transactions, balance }) => {
+  const [{ page, currentPage, totalPages }, dispatch] = useReducer(
+    (state, payload) => ({ ...state, ...payload }),
+    { page: [], currentPage: 0, totalPages: 0 }
+  );
+
+  // pagination previous
+  const onPrevious = () => {
+    const newPage = currentPage - 1;
+
+    if (newPage < 0) return;
+
+    const page = transactions.slice(
+      newPage * PAGE_SIZE,
+      newPage * PAGE_SIZE + PAGE_SIZE
+    );
+
+    dispatch({
+      page,
+      currentPage: newPage,
+    });
+  };
+
+  // pagination next
+  const onNext = () => {
+    const newPage = currentPage + 1;
+
+    if (newPage > totalPages) return;
+
+    const page = transactions.slice(
+      newPage * PAGE_SIZE,
+      newPage * PAGE_SIZE + PAGE_SIZE
+    );
+
+    dispatch({
+      page,
+      currentPage: newPage,
+    });
+  };
+
+  useEffect(() => {
+    if (transactions.length) {
+      const totalPages = Math.floor(transactions.length / PAGE_SIZE);
+      const page = transactions.slice(
+        currentPage,
+        (currentPage + 1) * PAGE_SIZE
+      );
+
+      dispatch({
+        totalPages,
+        page,
+      });
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <section className="max-w-7xl m-auto px-5">
       <div className="border-b py-5 pt-4">
@@ -31,8 +90,88 @@ export const Account = ({ wallet, transactions, balance }) => {
           Transactions
         </span>
       </div>
+      <div className="bg-white rounded-lg drop-shadow py-3 px-6 overflow-x-scroll md:overflow-hidden">
+        <div className="pb-3 pt-2 flex justify-between md:flex-nowrap flex-wrap gap-2">
+          <p>A total of {transactions.length} transactions found</p>
 
-      <TransactionsOverview transactions={transactions} />
+          <div className="border inline-block rounded-md overflow-hidden">
+            <button onClick={onPrevious} className=" p-2 py-1 hover:bg-gray-50">
+              &lt;
+            </button>
+            <span className="border-x p-2 py-1 h-[10px] cursor-default text-[0.95rem]">
+              {currentPage + 1} of {totalPages + 1}
+            </span>
+            <button onClick={onNext} className="p-2 py-1 hover:bg-gray-50">
+              &gt;
+            </button>
+          </div>
+        </div>
+        <table class="items-center bg-transparent w-full">
+          <thead className="border-b">
+            <tr>
+              <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle py-3 whitespace-nowrap font-semibold text-left">
+                Transaction Hash
+              </th>
+              <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle py-3 whitespace-nowrap font-semibold text-left">
+                Block
+              </th>
+              <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle py-3 whitespace-nowrap font-semibold text-left">
+                From
+              </th>
+              <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle py-3 whitespace-nowrap font-semibold text-left">
+                To
+              </th>
+              <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle py-3 whitespace-nowrap font-semibold text-left">
+                Value
+              </th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {page.map((transaction) => (
+              <tr className="border-b" key={transaction.hash}>
+                <td class="border-t-0 px-6 align-middle whitespace-nowrap p-4 text-left text-blueGray-700 ">
+                  <PageLink href={`/tx/${transaction.hash}`}>
+                    {getShortenAddressEnd(transaction.hash, 15)}
+                  </PageLink>
+                </td>
+                <td class="border-t-0 px-6 align-middle whitespace-nowrap p-4 ">
+                  <PageLink href={`/block/${parseInt(transaction.blockNum)}`}>
+                    {parseInt(transaction.blockNum)}
+                  </PageLink>
+                </td>
+                <td class="border-t-0 px-6 align-center whitespace-nowrap p-4">
+                  <PageLink href={`/account/${transaction.from}`}>
+                    {getShortenAddress(transaction.from, 8)}
+                  </PageLink>
+                </td>
+                <td class="border-t-0 px-6 align-middle whitespace-nowrap p-4">
+                  <PageLink href={`/account/${transaction.to}`}>
+                    {getShortenAddress(transaction.to, 8)}
+                  </PageLink>
+                </td>
+                <td class="border-t-0 px-6 align-middle whitespace-nowrap p-4">
+                  {transaction.value.toFixed(8)} ETH
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        <div className="flex justify-end mt-5">
+          <div className="border inline-block rounded-md overflow-hidden">
+            <button onClick={onPrevious} className=" p-2 py-1 hover:bg-gray-50">
+              &lt;
+            </button>
+            <span className="border-x p-2 py-1 h-[10px] cursor-default text-[0.95rem]">
+              {currentPage + 1} of {totalPages}
+            </span>
+            <button onClick={onNext} className="p-2 py-1 hover:bg-gray-50">
+              &gt;
+            </button>
+          </div>
+        </div>
+      </div>
     </section>
   );
 };
@@ -51,67 +190,6 @@ export const BalanceOverview = ({ balance }) => {
         <h4 className="text-cgray-100 ">ETH Value</h4>
         <p>0.0003 ETH</p>
       </div>
-    </div>
-  );
-};
-
-const TransactionsOverview = ({ transactions = [] }) => {
-  console.log(transactions);
-  const toDisplay = transactions.slice(0, 25);
-
-  return (
-    <div className="bg-white rounded-lg drop-shadow py-3 px-6 overflow-x-scroll md:overflow-hidden">
-      <table class="items-center bg-transparent w-full">
-        <thead className="border-b">
-          <tr>
-            <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle py-3 whitespace-nowrap font-semibold text-left">
-              Transaction Hash
-            </th>
-            <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle py-3 whitespace-nowrap font-semibold text-left">
-              Block
-            </th>
-            <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle py-3 whitespace-nowrap font-semibold text-left">
-              From
-            </th>
-            <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle py-3 whitespace-nowrap font-semibold text-left">
-              To
-            </th>
-            <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle py-3 whitespace-nowrap font-semibold text-left">
-              Value
-            </th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {toDisplay.map((transaction) => (
-            <tr className="border-b last:border-b-0" key={transaction.hash}>
-              <td class="border-t-0 px-6 align-middle whitespace-nowrap p-4 text-left text-blueGray-700 ">
-                <PageLink href={`/tx/${transaction.hash}`}>
-                  {getShortenAddressEnd(transaction.hash, 15)}
-                </PageLink>
-              </td>
-              <td class="border-t-0 px-6 align-middle whitespace-nowrap p-4 ">
-                <PageLink href={`/block/${parseInt(transaction.blockNum)}`}>
-                  {parseInt(transaction.blockNum)}
-                </PageLink>
-              </td>
-              <td class="border-t-0 px-6 align-center whitespace-nowrap p-4">
-                <PageLink href={`/account/${transaction.from}`}>
-                  {getShortenAddress(transaction.from, 8)}
-                </PageLink>
-              </td>
-              <td class="border-t-0 px-6 align-middle whitespace-nowrap p-4">
-                <PageLink href={`/account/${transaction.to}`}>
-                  {getShortenAddress(transaction.to, 8)}
-                </PageLink>
-              </td>
-              <td class="border-t-0 px-6 align-middle whitespace-nowrap p-4">
-                {transaction.value.toFixed(8)} ETH
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
     </div>
   );
 };
