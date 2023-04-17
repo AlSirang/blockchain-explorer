@@ -1,3 +1,6 @@
+import { EtherscanIcon, SvgEthereumIcon } from "@/icons";
+import Image from "next/image";
+
 export default function Footer() {
   const onTop = () => {
     window.scrollTo(0, 0);
@@ -27,7 +30,19 @@ export default function Footer() {
           </div>
         </div>
 
-        <div></div>
+        <div className="mt-5">
+          <div>
+            <h4 className="inline-flex items-center font-normal">
+              <SvgEthereumIcon />
+              Powered by Alchemy SDK
+            </h4>
+          </div>
+          <div>
+            <picture>
+              <img src="/images/map.png" alt="map" className="opacity-50" />
+            </picture>
+          </div>
+        </div>
       </div>
     </footer>
   );
