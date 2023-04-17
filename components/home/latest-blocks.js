@@ -40,7 +40,7 @@ const BlockInfo = ({ miner, number, agoTimestamp, transactions }) => {
               <SvgBlockIcon />
             </span>
             <div>
-              <PageLink href={`block/${number}`}>
+              <PageLink href={`/block/${number}`}>
                 <h4>{number}</h4>
               </PageLink>
 
@@ -51,12 +51,12 @@ const BlockInfo = ({ miner, number, agoTimestamp, transactions }) => {
         <div className="w-full md:w-[60%] pl-10 md:pl-0">
           <h4>
             Fee Recipient&nbsp;
-            <PageLink href={`account/${miner}`}>
+            <PageLink href={`/account/${miner}`}>
               {getShortenAddress(miner)}
             </PageLink>
           </h4>
           <p>
-            <PageLink href={`tx?block=${number}`}>
+            <PageLink href={`/tx?block=${number}`}>
               {transactions && transactions.length}
               &nbsp;txns&nbsp;
             </PageLink>

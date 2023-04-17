@@ -44,7 +44,7 @@ const TxnInfo = ({ to, from, transactionHash, agoTimestamp }) => {
               <SvgPaperIcon />
             </span>
             <div>
-              <PageLink href={`tx/${transactionHash}`}>
+              <PageLink href={`/tx/${transactionHash}`}>
                 <h4>{getShortenAddressEnd(transactionHash)}</h4>
               </PageLink>
               <p className="text-sm text-[#6c757d]">{agoTimestamp} ago</p>
@@ -54,13 +54,13 @@ const TxnInfo = ({ to, from, transactionHash, agoTimestamp }) => {
         <div className="w-full md:w-[60%] pl-10 md:pl-0">
           <h4>
             From&nbsp;
-            <PageLink href={`account/${from}`}>
+            <PageLink href={`/account/${from}`}>
               {getShortenAddress(from)}
             </PageLink>
           </h4>
           <h4>
             To&nbsp;
-            <PageLink href={`account/${to}`}>{getShortenAddress(to)}</PageLink>
+            <PageLink href={`/account/${to}`}>{getShortenAddress(to)}</PageLink>
           </h4>
         </div>
       </div>
