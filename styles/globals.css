@@ -6,6 +6,10 @@ a.page-nav {
   color: #0784c3;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: "Roboto", system-ui, -apple-system, "Segoe UI", "Helvetica Neue",
     "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji",
