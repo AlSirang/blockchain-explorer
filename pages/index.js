@@ -63,8 +63,6 @@ export const getServerSideProps = async () => {
     console.log({ err });
   }
 
-  console.log({ marketCap });
-
   return {
     props: {
       blocksInfo,
