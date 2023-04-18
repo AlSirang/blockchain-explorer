@@ -20,15 +20,19 @@ export default function Index({ transactionInfo, error }) {
 export const getServerSideProps = async (context) => {
   const { txnHash } = context.query;
   let data = {};
+  let error = false;
+
   try {
     data = await getTransactionInfo(txnHash);
+    if (!data) error = true;
   } catch (err) {
-    console.log({ err });
+    error = true;
   }
 
   return {
     props: {
       transactionInfo: data,
+      error,
     },
   };
 };

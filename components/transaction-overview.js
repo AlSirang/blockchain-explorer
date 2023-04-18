@@ -3,21 +3,21 @@ import { PageLink } from "./page-link";
 
 export default function TransactionOverview(props) {
   const {
-    to,
-    from,
-    gasPrice,
-    confirmations,
-    gasLimit,
-    maxFeePerGas,
-    maxPriorityFeePerGas,
-    value,
-    hash,
-    blockNumber,
-    nonce,
-    data,
-    gasUsed,
-    status,
-    transactionIndex,
+    to = "",
+    from = "",
+    gasPrice = 0,
+    confirmations = 0,
+    gasLimit = 0,
+    maxFeePerGas = 0,
+    maxPriorityFeePerGas = 0,
+    value = 0,
+    hash = "",
+    blockNumber = 0,
+    nonce = 0,
+    data = "0x",
+    gasUsed = 0,
+    status = null,
+    transactionIndex = 0,
   } = props;
 
   return (
@@ -189,9 +189,7 @@ export default function TransactionOverview(props) {
 
 const TransactionFee = ({ gasPrice, gasUsed }) => {
   const transactionFeeWei = gasPrice * gasUsed;
-  const transactionFeeETH = ethers.utils.formatEther(
-    transactionFeeWei.toString()
-  );
+  const transactionFeeETH = ethers.utils.formatEther(transactionFeeWei);
   return (
     <p className="col-span-12 md:col-span-9 text-[15px] break-words">
       {transactionFeeETH} ETH
@@ -200,7 +198,7 @@ const TransactionFee = ({ gasPrice, gasUsed }) => {
 };
 
 const Value = ({ value }) => {
-  const valueInETH = ethers.utils.formatEther(value.toString());
+  const valueInETH = ethers.utils.formatEther(value);
   return (
     <p className="col-span-12 md:col-span-9 text-[15px] break-words">
       {valueInETH} ETH
