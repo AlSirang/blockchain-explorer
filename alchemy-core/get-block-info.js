@@ -7,9 +7,9 @@ export const getBlockInfo = async (query) => {
   const blockInfo = await alchemy.core.getBlock(blockHashOrBlockTag);
   return {
     ...blockInfo,
-    baseFeePerGas: blockInfo.baseFeePerGas?.toString(),
-    gasLimit: blockInfo.gasLimit?.toString(),
-    gasUsed: blockInfo.gasUsed?.toString(),
-    _difficulty: blockInfo._difficulty?.toString(),
+    baseFeePerGas: blockInfo.baseFeePerGas?.toString() || 0,
+    gasLimit: blockInfo.gasLimit?.toString() || 0,
+    gasUsed: blockInfo.gasUsed?.toString() || 0,
+    _difficulty: blockInfo._difficulty?.toString() || 0,
   };
 };

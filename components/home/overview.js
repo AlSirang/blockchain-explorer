@@ -5,12 +5,26 @@ import {
   SvgServerIcon,
 } from "@/icons";
 import { PageLink } from "../page-link";
+import { useEffect, useState } from "react";
+import { getFinalizedAndSafeBlock } from "@/alchemy-core/get-finalized-and-safe-block";
 
-export default function Overview({
-  ethPrice,
-  marketCap,
-  finalizedAndsafeBlocks,
-}) {
+export default function Overview({ ethPrice, marketCap }) {
+  const [finalizedAndsafeBlocks, setBlocksInfo] = useState({
+    finalized: {
+      blockNumber: "0000000",
+    },
+    safe: {
+      blockNumber: "0000000",
+    },
+  });
+
+  useEffect(() => {
+    getFinalizedAndSafeBlock()
+      .then((res) => {
+        setBlocksInfo(res);
+      })
+      .catch((err) => {});
+  }, []);
   return (
     <section className="relative -top-7">
       <div className="max-w-7xl px-5 m-auto">

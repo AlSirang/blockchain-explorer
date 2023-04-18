@@ -12,17 +12,12 @@ export default function Home({
   blocksInfo,
   latestTransactions,
   ethPrice,
-  finalizedAndsafeBlocks,
   marketCap,
 }) {
   return (
     <>
       <Search />
-      <Overview
-        ethPrice={ethPrice}
-        finalizedAndsafeBlocks={finalizedAndsafeBlocks}
-        marketCap={marketCap}
-      />
+      <Overview ethPrice={ethPrice} marketCap={marketCap} />
       <section className="max-w-7xl m-auto px-5">
         <div className="grid gap-3 md:grid-cols-12">
           <div className="col-span-6">
@@ -42,21 +37,13 @@ export const getServerSideProps = async () => {
   let blocksInfo = [];
   let latestTransactions = [];
   let ethPrice = 0;
-  let finalizedAndsafeBlocks = {};
   let marketCap = 0;
 
   try {
-    [
-      blocksInfo,
-      latestTransactions,
-      ethPrice,
-      finalizedAndsafeBlocks,
-      marketCap,
-    ] = await Promise.all([
+    [blocksInfo, latestTransactions, ethPrice, marketCap] = await Promise.all([
       getLatestBlocks(),
       getLatestTransactions(),
       getETHPrice(),
-      getFinalizedAndSafeBlock(),
       getMarketCap(),
     ]);
   } catch (err) {
@@ -68,7 +55,6 @@ export const getServerSideProps = async () => {
       blocksInfo,
       latestTransactions,
       ethPrice,
-      finalizedAndsafeBlocks,
       marketCap,
     },
   };
