@@ -5,3 +5,4 @@ export * from "./ethereum-icon";
 export * from "./globe-icon";
 export * from "./server-icon";
 export * from "./meter-icon";
+export * from "./search-icon";
