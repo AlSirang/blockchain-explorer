@@ -4,7 +4,7 @@ export const SvgMeterIcon = () => {
       <svg
         fill="#000000"
         width="30"
-        height="30p"
+        height="30"
         viewBox="0 0 32 32"
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
