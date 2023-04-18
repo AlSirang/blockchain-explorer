@@ -5,7 +5,6 @@ import { LatestTxns } from "@/components/home/latest-txns";
 import { getLatestBlocks } from "@/alchemy-core/get-latest-blocks";
 import { getLatestTransactions } from "@/alchemy-core/get-latest-transactions";
 import { getETHPrice } from "@/alchemy-core/get-eth-price";
-import { getFinalizedAndSafeBlock } from "@/alchemy-core/get-finalized-and-safe-block";
 import { getMarketCap } from "@/alchemy-core/get-market-cap";
 
 export default function Home({
