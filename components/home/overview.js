@@ -48,9 +48,9 @@ export default function Overview({
                     </h3>
                     <p>
                       <PageLink
-                        href={`/block/${finalizedAndsafeBlocks?.safe.blockNumber}`}
+                        href={`/block/${finalizedAndsafeBlocks?.safe?.blockNumber}`}
                       >
-                        {finalizedAndsafeBlocks?.safe.blockNumber}
+                        {finalizedAndsafeBlocks?.safe?.blockNumber}
                       </PageLink>
                     </p>
                   </div>
@@ -63,9 +63,9 @@ export default function Overview({
                     </h3>
                     <p>
                       <PageLink
-                        href={`/block/${finalizedAndsafeBlocks?.finalized.blockNumber}`}
+                        href={`/block/${finalizedAndsafeBlocks?.finalized?.blockNumber}`}
                       >
-                        {finalizedAndsafeBlocks?.finalized.blockNumber}
+                        {finalizedAndsafeBlocks?.finalized?.blockNumber}
                       </PageLink>
                     </p>
                   </div>
