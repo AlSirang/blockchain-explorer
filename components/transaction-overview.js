@@ -188,7 +188,7 @@ export default function TransactionOverview(props) {
 }
 
 const TransactionFee = ({ gasPrice, gasUsed }) => {
-  const transactionFeeWei = gasPrice * gasUsed;
+  const transactionFeeWei = (gasPrice * gasUsed).toString();
   const transactionFeeETH = ethers.utils.formatEther(transactionFeeWei);
   return (
     <p className="col-span-12 md:col-span-9 text-[15px] break-words">
@@ -198,7 +198,7 @@ const TransactionFee = ({ gasPrice, gasUsed }) => {
 };
 
 const Value = ({ value }) => {
-  const valueInETH = ethers.utils.formatEther(value);
+  const valueInETH = ethers.utils.formatEther(value.toString());
   return (
     <p className="col-span-12 md:col-span-9 text-[15px] break-words">
       {valueInETH} ETH

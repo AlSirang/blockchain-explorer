@@ -177,7 +177,7 @@ export const Account = ({ wallet, transactions, balance }) => {
 };
 
 export const BalanceOverview = ({ balance }) => {
-  const balanceETH = ethers.utils.formatEther(balance);
+  const balanceETH = ethers.utils.formatEther(balance.toString());
   return (
     <div className="grid gap-5">
       <h3>Overview</h3>
