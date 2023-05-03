@@ -39,7 +39,7 @@ export default function Overview({ ethPrice, marketCap }) {
                     <h3 className="text-cgray-100 text-[0.85rem]">
                       ETHER PRICE
                     </h3>
-                    <p>$ {ethPrice}</p>
+                    <p>${ethPrice?.toLocaleString("en-us")}</p>
                   </div>
                 </div>
                 <div className="py-3 flex gap-3 items-center">
@@ -48,7 +48,7 @@ export default function Overview({ ethPrice, marketCap }) {
                     <h3 className="text-cgray-100 text-[0.85rem]">
                       MARKET CAP
                     </h3>
-                    <p>$ {marketCap}</p>
+                    <p>${marketCap?.toLocaleString("en-us")}</p>
                   </div>
                 </div>
               </div>
